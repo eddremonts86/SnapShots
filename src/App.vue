@@ -16,9 +16,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#"
-              >Home <span class="sr-only">(current)</span></a
-            >
+            <a class="nav-link" href="#">
+              Home
+              <span class="sr-only">(current)</span>
+            </a>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
@@ -31,9 +32,7 @@
               v-model="tags"
               :value="tags"
             />
-            <label class="form-check-label" for="exampleRadios1">
-              Tags
-            </label>
+            <label class="form-check-label" for="exampleRadios1">Tags</label>
           </div>
           <div class="form-check mx-2">
             <input
@@ -45,9 +44,7 @@
               :value="ids"
               checked
             />
-            <label class="form-check-label" for="exampleRadios2">
-              Ids
-            </label>
+            <label class="form-check-label" for="exampleRadios2">Ids</label>
           </div>
 
           <input
@@ -61,22 +58,15 @@
         </form>
       </div>
     </nav>
-
-    <section
-      :id="key"
-      :key="img.name"
-      class="imageSettion"
-      v-for="img in images"
-    >
-      <h2 sty>{{ img.name }}</h2>
+    <section :key="key" class="imageSettion" v-for="(imgs, key) in images">
       <div class="flex">
         <div
           class="card"
           style="width: 18rem;"
-          v-for="(url, key) in img.imgaes"
-          :key="key"
+          :key="img.id"
+          v-for="img in imgs"
         >
-          <img :src="url" width="100%" />
+          <img :src="img.download_url" width="100%" class="images" />
         </div>
       </div>
     </section>
@@ -84,28 +74,25 @@
 </template>
 <script>
 import snapshopt from "@/components/snapShots.vue";
+import axios from "axios";
+
 export default {
   name: "App",
   components: { snapshopt },
   data: () => {
     return {
+      filter: true,
       elementToPrint: "",
       iframeTag: false,
       eleID: false,
       eleTag: false,
       ids: true,
       tags: false,
-      images: [
-        {
-          name: "Amsterdam",
-          imgaes: [
-            "./assets/imgs/Amsterdam/Daytime/Amsterdam_day.jpg",
-            "./assets/imgs/Amsterdam/Daytime/Amsterdam_day.jpg",
-            "./assets/imgs/Amsterdam/Daytime/Amsterdam_day.jpg"
-          ]
-        }
-      ]
+      images: []
     };
+  },
+  created() {
+    this.getImages();
   },
   methods: {
     getElemet() {
@@ -123,6 +110,23 @@ export default {
         default:
         // code block
       }
+    },
+    getImages() {
+      axios({
+        method: "get",
+        url: "https://picsum.photos/v2/list"
+      }).then(response => {
+        this.images = this.chunk(response.data, 5);
+      });
+    },
+    chunk(arr, len) {
+      var chunks = [],
+        i = 0,
+        n = arr.length;
+      while (i < n) {
+        chunks.push(arr.slice(i, (i += len)));
+      }
+      return chunks;
     }
   },
   watch: {
@@ -151,5 +155,10 @@ export default {
 }
 .flex {
   display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.images {
+  border-radius: 5px;
 }
 </style>

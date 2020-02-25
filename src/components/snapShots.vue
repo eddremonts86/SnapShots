@@ -12,7 +12,7 @@
 </template>
 <script>
 export default {
-  name: "snapShot",
+  name: "SnapShot",
   data() {
     return {
       output: null

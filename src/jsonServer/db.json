@@ -1,0 +1,12 @@
+{
+    "images":[
+        {
+            "name": "Amsterdam",
+            "imgaes": [
+              "./assets/imgs/Amsterdam/Daytime/Amsterdam_day.jpg",
+              "./assets/imgs/Amsterdam/Daytime/Amsterdam_day.jpg",
+              "./assets/imgs/Amsterdam/Daytime/Amsterdam_day.jpg"
+            ]
+          }
+    ]
+}
